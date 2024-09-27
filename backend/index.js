@@ -164,14 +164,14 @@ app.put("/user/update/:id", async (req, res) => {
     updateItemArray.push(`${key}="${value}"`);
   }
 
-  const updateItemArrayToString = updateItemArray.join(", ");
-
   try {
-    const query = `UPDATE user SET ${updateItemArrayToString} WHERE id=${id}`;
+    const query = `UPDATE user SET ${updateItemArray.join(
+      ", "
+    )} WHERE id=${id}`;
     const [result, feild] = await connection.query(query);
     res.json({
       success: true,
-      message: { update: "done", info: updateItemObject },
+      message: result,
     });
   } catch {
     res.json({ success: false, message: "Query error" });

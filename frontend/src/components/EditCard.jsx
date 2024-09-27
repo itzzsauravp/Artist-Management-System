@@ -42,12 +42,8 @@ const EditCard = ({ visible, item, setEditCard }) => {
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
-
-    console.log("Formatted Date", formattedDate);
-    console.log("Normal data from frontend", item.dob);
-
     try {
-      const [result] = await userApi.put(
+      await userApi.put(
         `/update/${item.id}`,
         {
           ...formState,
@@ -59,8 +55,6 @@ const EditCard = ({ visible, item, setEditCard }) => {
           },
         }
       );
-      //remove this log later
-      console.log(result);
       alert("User updated successfully!");
       setEditCard({ visible: false });
       window.location.reload();
