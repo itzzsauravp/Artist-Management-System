@@ -76,6 +76,7 @@ const UserPage = () => {
         setTempUserData(result.data);
         setTableHeaders(Object.keys(result.data[0]));
       }
+      console.log(result);
     };
 
     fetchUsers();
