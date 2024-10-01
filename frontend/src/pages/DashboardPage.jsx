@@ -1,12 +1,15 @@
 import { useNavigate, Link } from "react-router-dom";
 import { MdOutlineLogout } from "react-icons/md";
-
+import { useState } from "react";
 const DashboardPage = () => {
+  const [loginNameAndRole, setLoginNameAndRole] = useState(
+    JSON.parse(localStorage.getItem("loginNameAndRole"))
+  );
+  const { first_name, last_name, role_type } = loginNameAndRole;
   const navigate = useNavigate();
-  // const location = useLocation();
-  // const { first_name, last_name, role_type } = location.state;
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("loginNameAndRole");
     navigate("/login");
   };
 
@@ -31,9 +34,11 @@ const DashboardPage = () => {
         </div>
       </div>
       <div className="absolute top-10 left-10 border-2 p-5 shadow-lg hover:shadow-slate-500 duration-[0.3s] rounded-md">
-        <p className="text-[1.2rem]">{/* {first_name} {last_name} */}</p>
+        <p className="text-[1.2rem]">
+          {first_name} {last_name}
+        </p>
         <p>
-          Role: <span className="uppercase font-bold"></span>
+          Role: <span className="uppercase font-bold">{role_type}</span>
         </p>
       </div>
     </section>
