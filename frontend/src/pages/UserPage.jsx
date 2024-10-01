@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import userApi from "../api/userAPI.js";
 import ContextMenu from "../components/ContextMenu.jsx";
 import EditCard from "../components/EditCard.jsx";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const UserPage = () => {
   const [userData, setUserData] = useState([]);
+  const [message, setMessage] = useState();
   const [tempUserData, setTempUserData] = useState([]);
   const [tableHeaders, setTableHeaders] = useState([]);
   const [searchUser, setSearchUser] = useState("");
@@ -16,7 +19,7 @@ const UserPage = () => {
     visible: false,
   });
   const [noResults, setNoResults] = useState(false);
-
+  const navigate = useNavigate();
   const handleRightClick = (e, item) => {
     e.preventDefault();
     setContextMenu({
@@ -71,12 +74,12 @@ const UserPage = () => {
           },
         }
       );
+      setMessage(result.data.message);
       if (result.data.length > 0) {
         setUserData(result.data);
         setTempUserData(result.data);
         setTableHeaders(Object.keys(result.data[0]));
       }
-      console.log(result);
     };
 
     fetchUsers();
@@ -111,6 +114,10 @@ const UserPage = () => {
 
   return (
     <div onClick={handleClick} className="min-h-screen">
+      <IoMdArrowRoundBack
+        onClick={() => navigate("/dashboard")}
+        className="absolute top-4 left-4 text-2xl hover:bg-slate-200"
+      />
       <div className="flex justify-center p-2">
         <input
           type="text"
@@ -121,49 +128,54 @@ const UserPage = () => {
           onChange={(e) => setSearchUser(e.target.value)}
         />
       </div>
-      <table className="min-w-full table-auto border-collapse border border-gray-300">
-        <ContextMenu />
-        <thead>
-          <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-            {tableHeaders.map((th, index) => (
-              <th
-                key={index}
-                className="py-3 px-6 text-left border-b border-gray-300"
-              >
-                {th}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="text-gray-700 text-sm">
-          {noResults ? (
-            <tr>
-              <td colSpan={tableHeaders.length} className="text-center py-3">
-                <h1>Sorry, no such users available</h1>
-              </td>
+      {tableHeaders.length > 0 ? (
+        <table className="min-w-full table-auto border-collapse border border-gray-300">
+          <ContextMenu />
+          <thead>
+            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+              {tableHeaders.map((th, index) => (
+                <th
+                  key={index}
+                  className="py-3 px-6 text-left border-b border-gray-300"
+                >
+                  {th}
+                </th>
+              ))}
             </tr>
-          ) : (
-            userData.map((item, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className="border-b border-gray-200 hover:bg-gray-100"
-                onContextMenu={(e) => {
-                  handleRightClick(e, item);
-                }}
-              >
-                {tableHeaders.map((header, colIndex) => (
-                  <td
-                    key={colIndex}
-                    className="py-3 px-6 border-b border-gray-300"
-                  >
-                    {item[header]}
-                  </td>
-                ))}
+          </thead>
+          <tbody className="text-gray-700 text-sm">
+            {noResults ? (
+              <tr>
+                <td colSpan={tableHeaders.length} className="text-center py-3">
+                  <h1>Sorry, no such users available</h1>
+                </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              userData.map((item, rowIndex) => (
+                <tr
+                  key={rowIndex}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                  onContextMenu={(e) => {
+                    handleRightClick(e, item);
+                  }}
+                >
+                  {tableHeaders.map((header, colIndex) => (
+                    <td
+                      key={colIndex}
+                      className="py-3 px-6 border-b border-gray-300"
+                    >
+                      {item[header]}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      ) : (
+        <div className="text-center mt-40 text-4xl font-bold">{message}</div>
+      )}
+
       <ContextMenu
         visible={contextMenu.visible}
         position={contextMenu.position}
