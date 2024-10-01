@@ -8,7 +8,6 @@ const LoginCard = () => {
     const { name, value } = e.target;
     setLoginCredentials((prev) => ({
       ...prev,
-      //dynamic property keys in js (only withing a js obj)
       [name]: value,
     }));
   };
@@ -24,15 +23,19 @@ const LoginCard = () => {
       const { token } = response.data;
 
       localStorage.setItem("token", token);
-      response.status === 200 && response.data.success === true
-        ? navigate("/dashboard", {
-            state: {
-              first_name: response.data.first_name,
-              last_name: response.data.last_name,
-              role_type: response.data.role_type
-            },
+      if (response.status === 200 && response.data.success === true) {
+        navigate("/dashboard");
+        localStorage.setItem(
+          "loginNameAndRole",
+          JSON.stringify({
+            first_name: response.data.first_name,
+            last_name: response.data.last_name,
+            role_type: response.data.role_type,
           })
-        : alert(response.data.message);
+        );
+      } else {
+        alert(response.data.message);
+      }
     } catch (err) {
       alert(err.response.data.message);
     }
