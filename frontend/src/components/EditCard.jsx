@@ -42,12 +42,14 @@ const EditCard = ({ visible, item, setEditCard }) => {
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
+    const token = localStorage.getItem("token");
     try {
-      await userApi.put(
+      const result = await userApi.put(
         `/update/${item.id}`,
         {
           ...formState,
           dob: formattedDate,
+          token,
         },
         {
           headers: {
@@ -55,9 +57,13 @@ const EditCard = ({ visible, item, setEditCard }) => {
           },
         }
       );
-      alert("User updated successfully!");
-      setEditCard({ visible: false });
-      window.location.reload();
+      if (!result.data.success) {
+        alert(result.data.message);
+      } else {
+        alert("User updated successfully!");
+        setEditCard({ visible: false });
+        window.location.reload();
+      }
     } catch (error) {
       console.error("Failed to update user:", error);
       alert("Error updating user!");
