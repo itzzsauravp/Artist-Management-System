@@ -12,6 +12,10 @@ const ContextMenu = ({ visible, position, handleEdit, handleDelete, item }) => {
         zIndex: 999,
       }}
     >
+      <button className="border-b border-gray-300 text-left px-4 py-2 hover:bg-green-300 transition duration-200">
+        Create
+      </button>
+
       <button
         className="border-b border-gray-300 text-left px-4 py-2 hover:bg-blue-300 transition duration-200"
         onClick={() => handleEdit(item)}
@@ -27,7 +31,6 @@ const ContextMenu = ({ visible, position, handleEdit, handleDelete, item }) => {
     </div>
   );
 };
-
 
 // Prop validation
 ContextMenu.propTypes = {
