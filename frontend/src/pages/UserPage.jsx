@@ -20,6 +20,7 @@ const UserPage = () => {
   });
   const [noResults, setNoResults] = useState(false);
   const navigate = useNavigate();
+
   const handleRightClick = (e, item) => {
     e.preventDefault();
     setContextMenu({
@@ -113,67 +114,76 @@ const UserPage = () => {
   }, [searchUser, tempUserData]);
 
   return (
-    <div onClick={handleClick} className="min-h-screen">
+    <div onClick={handleClick} className="min-h-screen bg-gray-50 p-6">
       <IoMdArrowRoundBack
         onClick={() => navigate("/dashboard")}
-        className="absolute top-4 left-4 text-2xl hover:bg-slate-200"
+        className="absolute top-4 left-4 text-2xl text-gray-600 hover:text-gray-800 cursor-pointer transition-colors duration-200"
       />
-      <div className="flex justify-center p-2">
+      <div className="flex justify-center p-4">
         <input
           type="text"
           name="search"
           htmlFor="search"
-          placeholder="Search : (first_name: `someone`, address:`somewhere`)"
-          className="border-2 w-[50%] px-5 py-2 shadow-lg"
+          placeholder="Search: (first_name: `someone`, address:`somewhere`)"
+          className="border rounded-lg w-[50%] px-5 py-2 shadow-sm focus:ring-2 focus:ring-blue-500 transition duration-200"
           onChange={(e) => setSearchUser(e.target.value)}
         />
       </div>
       {tableHeaders.length > 0 ? (
-        <table className="min-w-full table-auto border-collapse border border-gray-300">
-          <ContextMenu />
-          <thead>
-            <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-              {tableHeaders.map((th, index) => (
-                <th
-                  key={index}
-                  className="py-3 px-6 text-left border-b border-gray-300"
-                >
-                  {th}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="text-gray-700 text-sm">
-            {noResults ? (
-              <tr>
-                <td colSpan={tableHeaders.length} className="text-center py-3">
-                  <h1>Sorry, no such users available</h1>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse border border-gray-200 shadow-sm rounded-lg">
+            <ContextMenu />
+            <thead>
+              <tr className="bg-gray-100 text-gray-700 uppercase text-sm leading-normal">
+                {tableHeaders.map((th, index) => (
+                  <th
+                    key={index}
+                    className="py-3 px-6 text-left border-b border-gray-200"
+                  >
+                    {th}
+                  </th>
+                ))}
               </tr>
-            ) : (
-              userData.map((item, rowIndex) => (
-                <tr
-                  key={rowIndex}
-                  className="border-b border-gray-200 hover:bg-gray-100"
-                  onContextMenu={(e) => {
-                    handleRightClick(e, item);
-                  }}
-                >
-                  {tableHeaders.map((header, colIndex) => (
-                    <td
-                      key={colIndex}
-                      className="py-3 px-6 border-b border-gray-300"
-                    >
-                      {item[header]}
-                    </td>
-                  ))}
+            </thead>
+            <tbody className="text-gray-600 text-sm">
+              {noResults ? (
+                <tr>
+                  <td
+                    colSpan={tableHeaders.length}
+                    className="text-center py-6"
+                  >
+                    <h1 className="text-xl font-semibold">
+                      Sorry, no such users available
+                    </h1>
+                  </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                userData.map((item, rowIndex) => (
+                  <tr
+                    key={rowIndex}
+                    className="border-b border-gray-200 hover:bg-gray-100 cursor-pointer transition-colors duration-200"
+                    onContextMenu={(e) => {
+                      handleRightClick(e, item);
+                    }}
+                  >
+                    {tableHeaders.map((header, colIndex) => (
+                      <td
+                        key={colIndex}
+                        className="py-3 px-6 border-b border-gray-200"
+                      >
+                        {item[header]}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       ) : (
-        <div className="text-center mt-40 text-4xl font-bold">{message}</div>
+        <div className="text-center mt-40 text-4xl font-bold text-gray-700">
+          {message}
+        </div>
       )}
 
       <ContextMenu
@@ -183,7 +193,7 @@ const UserPage = () => {
         handleEdit={handleEdit}
         item={contextMenu.item}
       />
-      <div className="absolute top-[20%] left-[36%]">
+      <div className="absolute top-[20%] left-[50%] transform -translate-x-1/2">
         <EditCard
           visible={editCard.visible}
           item={editCard.item}

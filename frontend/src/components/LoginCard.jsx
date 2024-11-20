@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userApi from "../api/userAPI";
+
 const LoginCard = () => {
   const [loginCredentials, setLoginCredentials] = useState({});
   const navigate = useNavigate();
+
   const handleLoginCredentials = (e) => {
     const { name, value } = e.target;
     setLoginCredentials((prev) => ({
@@ -42,33 +44,43 @@ const LoginCard = () => {
   };
 
   return (
-    <div className="p-5 bg-slate-300 flex flex-col h-min w-[500px]">
-      <div className="text-2xl font-bold mb-5 text-center">Login</div>
-      <form
-        action=""
-        method="post"
-        className="flex flex-col gap-4 w-full"
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="text"
-          name="email"
-          placeholder="Email: "
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          onChange={handleLoginCredentials}
-        />
-        <input
-          type="text"
-          name="password"
-          placeholder="Password:"
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          onChange={handleLoginCredentials}
-        />
-        <input
+    <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md mx-auto mt-10">
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+        Login
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-col">
+          <label htmlFor="email" className="text-gray-700">
+            Email
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Email"
+            className="mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleLoginCredentials}
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="password" className="text-gray-700">
+            Password
+          </label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+            className="mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={handleLoginCredentials}
+          />
+        </div>
+        <button
           type="submit"
-          value="Login"
-          className="bg-blue-400 py-2 px-5 outline-none focus:outline-slate-700 focus:outline-offset-4"
-        />
+          className="w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Login
+        </button>
       </form>
     </div>
   );

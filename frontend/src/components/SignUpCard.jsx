@@ -1,16 +1,16 @@
 import { useState } from "react";
-import userApi from "../api/userAPI";
 import { useNavigate } from "react-router-dom";
+import userApi from "../api/userAPI";
 
 const SignUpCard = () => {
   const initialFormValue = {
-    first_name: "test",
-    last_name: "data",
-    email: "testdata@gmail.com",
-    password: "fenrir2003",
-    phone: "9865000000",
-    dob: "2003-01-14 00:00:00",
-    address: "ktm",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    phone: "",
+    dob: "",
+    address: "",
     gender: "o",
     role_type: "artist",
   };
@@ -18,13 +18,14 @@ const SignUpCard = () => {
   const [formValue, setFormValue] = useState(initialFormValue);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
       const response = await userApi.post("/add", formValue, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
       });
       if (response.data.affectedRows) {
@@ -49,128 +50,78 @@ const SignUpCard = () => {
   };
 
   return (
-    <div className="p-5 bg-slate-300 flex flex-col h-min w-[500px]">
-      <div className="text-2xl font-bold mb-5 text-center">Sign Up</div>
-      <form
-        action=""
-        method="post"
-        className="flex flex-col gap-4 w-full"
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="text"
-          name="first_name"
-          placeholder="First Name: "
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          value={formValue.first_name}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="last_name"
-          placeholder="Last Name: "
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          value={formValue.last_name}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="email"
-          placeholder="Email: "
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          value={formValue.email}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          value={formValue.password}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone Numbers: "
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          value={formValue.phone}
-          onChange={handleChange}
-        />
-        <input
-          type="date"
-          name="dob"
-          placeholder="Date Of Birth: (2000-01-01 01:00:00)"
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          value={formValue.dob}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="address"
-          placeholder="Address: "
-          className="block px-5 py-2 outline-none focus:outline-slate-700 focus:outline-offset-4"
-          value={formValue.address}
-          onChange={handleChange}
-        />
-        <div className="flex gap-2">
-          Gender ----- Male
-          <input
-            type="radio"
-            name="gender"
-            value="m"
-            checked={formValue.gender === "m"}
-            onChange={handleChange}
-          />
-          Female
-          <input
-            type="radio"
-            name="gender"
-            value="f"
-            checked={formValue.gender === "f"}
-            onChange={handleChange}
-          />
-          Other
-          <input
-            type="radio"
-            name="gender"
-            value="o"
-            checked={formValue.gender === "o"}
-            onChange={handleChange}
-          />
+    <div className="p-8 bg-white rounded-lg shadow-md w-full max-w-md mx-auto mt-10">
+      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Sign Up</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {[
+          { name: 'first_name', type: 'text', placeholder: 'First Name' },
+          { name: 'last_name', type: 'text', placeholder: 'Last Name' },
+          { name: 'email', type: 'email', placeholder: 'Email' },
+          { name: 'password', type: 'password', placeholder: 'Password' },
+          { name: 'phone', type: 'text', placeholder: 'Phone Number' },
+          { name: 'dob', type: 'date', placeholder: 'Date of Birth' },
+          { name: 'address', type: 'text', placeholder: 'Address' }
+        ].map((field, index) => (
+          <div key={index} className="flex flex-col">
+            <label htmlFor={field.name} className="text-gray-700">
+              {field.placeholder}
+            </label>
+            <input
+              type={field.type}
+              name={field.name}
+              id={field.name}
+              placeholder={field.placeholder}
+              className="mt-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={formValue[field.name]}
+              onChange={handleChange}
+            />
+          </div>
+        ))}
+        <div className="flex flex-col">
+          <label className="text-gray-700">Gender</label>
+          <div className="flex items-center gap-4 mt-2">
+            {['m', 'f', 'o'].map((value, index) => (
+              <label key={index} className="flex items-center">
+                <input
+                  type="radio"
+                  name="gender"
+                  value={value}
+                  checked={formValue.gender === value}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                {value === 'm' ? 'Male' : value === 'f' ? 'Female' : 'Other'}
+              </label>
+            ))}
+          </div>
         </div>
-        <div className="flex gap-2">
-          Roles ----- Super Admin
-          <input
-            type="radio"
-            name="role_type"
-            value="super_admin"
-            checked={formValue.role_type === "super_admin"}
-            onChange={handleChange}
-          />
-          Artist Manager
-          <input
-            type="radio"
-            name="role_type"
-            value="artist_manager"
-            checked={formValue.role_type === "artist_manager"}
-            onChange={handleChange}
-          />
-          Artist
-          <input
-            type="radio"
-            name="role_type"
-            value="artist"
-            checked={formValue.role_type === "artist"}
-            onChange={handleChange}
-          />
+        <div className="flex flex-col">
+          <label className="text-gray-700">Role</label>
+          <div className="flex items-center gap-4 mt-2">
+            {['super_admin', 'artist_manager', 'artist'].map((value, index) => (
+              <label key={index} className="flex items-center">
+                <input
+                  type="radio"
+                  name="role_type"
+                  value={value}
+                  checked={formValue.role_type === value}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                {value.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+              </label>
+            ))}
+          </div>
         </div>
-        <input
+        <button
           type="submit"
-          value={isSubmitting ? "Submitting..." : "Submit"}
-          className="bg-blue-400 py-2 px-5 outline-none focus:outline-slate-700 focus:outline-offset-4"
+          className={`w-full py-2 px-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+            isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={isSubmitting}
-        />
+        >
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </button>
       </form>
     </div>
   );

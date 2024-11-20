@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
+
 const ContextMenu = ({ visible, position, handleEdit, handleDelete, item }) => {
   if (!visible) return null;
 
   return (
     <div
-      className="flex flex-col w-28 rounded-md shadow-lg bg-white opacity-90"
+      className="flex flex-col w-36 rounded-md shadow-lg bg-white border border-gray-300"
       style={{
         position: "absolute",
         top: position.y,
@@ -12,18 +13,17 @@ const ContextMenu = ({ visible, position, handleEdit, handleDelete, item }) => {
         zIndex: 999,
       }}
     >
-      <button className="border-b border-gray-300 text-left px-4 py-2 hover:bg-green-300 transition duration-200">
+      <button className="border-b border-gray-200 text-left px-4 py-2 hover:bg-green-100 transition duration-200">
         Create
       </button>
-
       <button
-        className="border-b border-gray-300 text-left px-4 py-2 hover:bg-blue-300 transition duration-200"
+        className="border-b border-gray-200 text-left px-4 py-2 hover:bg-blue-100 transition duration-200"
         onClick={() => handleEdit(item)}
       >
         Edit
       </button>
       <button
-        className="text-left px-4 py-2 hover:bg-red-300 transition duration-200"
+        className="text-left px-4 py-2 hover:bg-red-100 transition duration-200"
         onClick={() => handleDelete(item)}
       >
         Delete

@@ -1,12 +1,14 @@
 import { useNavigate, Link } from "react-router-dom";
 import { MdOutlineLogout } from "react-icons/md";
 import { useState } from "react";
+
 const DashboardPage = () => {
   const [loginNameAndRole, setLoginNameAndRole] = useState(
     JSON.parse(localStorage.getItem("loginNameAndRole"))
   );
   const { first_name, last_name, role_type } = loginNameAndRole;
   const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("loginNameAndRole");
@@ -14,30 +16,32 @@ const DashboardPage = () => {
   };
 
   return (
-    <section className="flex justify-center items-center mt-[15%] gap-[50px] flex-col">
+    <section className="flex justify-center items-center mt-20 gap-10 flex-col">
       <button
-        className="absolute top-10 right-10 text-5xl text-red-400"
+        className="absolute top-4 right-4 text-4xl text-red-600 hover:text-red-800"
         onClick={handleLogout}
       >
         <MdOutlineLogout />
       </button>
-      <p className="text-5xl text-slate-500">Budget Dashboard</p>
+      <h1 className="text-4xl font-bold text-gray-800">
+        Artist Management System
+      </h1>
       <div className="flex gap-5">
-        <div className="border-2 px-10 py-5 shadow-lg shadow-cyan-500/50 rounded-md bg-cyan-50 text-2xl cursor-pointer hover:shadow-cyan-500 duration-[0.2s]">
+        <div className="border px-6 py-3 shadow-lg rounded-lg bg-cyan-100 text-xl cursor-pointer hover:bg-cyan-200 transition duration-200">
           <Link to="/dashboard/userInfo">Manage User</Link>
         </div>
-        <div className="border-2 px-10 py-5 shadow-lg shadow-blue-500/50 rounded-md bg-blue-50 text-2xl cursor-pointer hover:shadow-blue-500 duration-[0.2s]">
+        <div className="border px-6 py-3 shadow-lg rounded-lg bg-blue-100 text-xl cursor-pointer hover:bg-blue-200 transition duration-200">
           Manage Artist
         </div>
-        <div className="border-2 px-10 py-5 shadow-lg shadow-indigo-500/50 rounded-md bg-indigo-50 text-2xl cursor-pointer hover:shadow-indigo-500 duration-[0.2s]">
+        <div className="border px-6 py-3 shadow-lg rounded-lg bg-indigo-100 text-xl cursor-pointer hover:bg-indigo-200 transition duration-200">
           Manage Music
         </div>
       </div>
-      <div className="absolute top-10 left-10 border-2 p-5 shadow-lg hover:shadow-slate-500 duration-[0.3s] rounded-md">
-        <p className="text-[1.2rem]">
+      <div className="absolute top-4 left-4 border p-4 shadow-lg hover:shadow-md transition duration-300 rounded-lg">
+        <p className="text-xl font-medium">
           {first_name} {last_name}
         </p>
-        <p>
+        <p className="text-lg">
           Role: <span className="uppercase font-bold">{role_type}</span>
         </p>
       </div>

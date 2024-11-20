@@ -17,9 +17,12 @@ class UserController {
       gender,
       address,
     } = req.body;
+    console.log(req.body);
     try {
       const query = `INSERT INTO user(first_name, last_name, email, password, role_type, phone, dob, gender, address) VALUES ("${first_name}", "${last_name}", "${email}", "${password}", "${role_type}", "${phone}", "${dob}", "${gender}", "${address}")`;
+      console.log(query);
       const [result, fields] = await this.connection.query(query);
+      console.log(result);
       if (result) {
         res.json(result);
       } else {
